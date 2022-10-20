@@ -10,4 +10,4 @@
 
 ## 💻 Projeto
 
-O CardPay é um componente desenvolvido junto com a Rocketseat no evento de explorer lab, ele tem como função simular um formulário de preenchimento do cartão de crédito, onde é possível adicionar máscara aos inputs e atualizar elementos HTML via DOM.
+O PayCardOnline é um componente desenvolvido junto com a Rocketseat no evento de explorer lab, ele tem como função o preenchimento do cartão de crédito, onde é possível adicionar máscara aos inputs e atualizar elementos HTML via DOM.
