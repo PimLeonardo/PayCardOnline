@@ -59,16 +59,12 @@ const cardNumberPattern = {
   mask: [
     {
       mask: "0000 0000 0000 0000",
-      cardType: "default",
-    },
-    {
-      mask: "0000 0000 0000 0000",
       regex: /^4\d{0,15}/,
       cardtype: "visa",
     },
     {
       mask: "0000 0000 0000 0000",
-      regex: /^(5[1-5]\d{0,2}|22[2-9]\d{0,1}|2[3-7]\d{0,2})\d{0,12}/,
+      regex: /^(5[1-5]\d{0,2}|^22[2-9]\d{0,1}|^2[3-7]\d{0,2})\d{0,12}/,
       cardtype: "mastercard",
     },
     {
@@ -86,14 +82,62 @@ const cardNumberPattern = {
       regex: /^3[47]\d{0,13}/,
       cardtype: "american",
     },
+    {
+      mask: "0000 0000 0000 0000",
+      cardType: "default",
+    },
   ],
   dispatch: function (appended, dynamicMasked) {
-    let number = (dynamicMasked.value + appended).replace(/\D/g, "");
+    const number = (dynamicMasked.value + appended).replace(/\D/g, "");
     const findMask = dynamicMasked.compiledMasks.find(function (item) {
       return number.match(item.regex);
     });
     return findMask;
   },
 };
-
 const cardNumberMasked = IMask(cardNumber, cardNumberPattern);
+
+const addButton = document.querySelector("#add-card");
+addButton.addEventListener("click", () => {
+  alert("Cartão adicionado");
+});
+
+document.querySelector("form").addEventListener("submit", (event) => {
+  event.preventDefault();
+});
+
+const cardHolder = document.querySelector("#card-holder");
+cardHolder.addEventListener("input", () => {
+  const ccHolder = document.querySelector(".cc-holder .value");
+  ccHolder.innerText =
+    cardHolder.value.length === 0 ? "NOME EXEMPLO" : cardHolder.value;
+});
+
+securityCodeMasked.on("accept", () => {
+  updateSecurityCode(securityCodeMasked.value);
+});
+
+function updateSecurityCode(code) {
+  const ccSecurity = document.querySelector(".cc-security .value");
+  ccSecurity.innerText = code.length === 0 ? "123" : code;
+}
+
+cardNumberMasked.on("accept", () => {
+  updateCardNumber(cardNumberMasked.value);
+  let cardType = cardNumberMasked.masked.currentMask.cardtype;
+  setCardType(cardType);
+});
+
+function updateCardNumber(number) {
+  const ccNumber = document.querySelector(".cc-number");
+  ccNumber.innerText = number.length === 0 ? "1234 5678 9123 4567" : number;
+}
+
+expirationDateMasked.on("accept", () => {
+  updateExpirationDate(expirationDateMasked.value);
+});
+
+function updateExpirationDate(date) {
+  const ccExpiration = document.querySelector(".cc-extra .value");
+  ccExpiration.innerText = date.length === 0 ? "12/34" : date;
+}
