@@ -84,6 +84,26 @@ const cardNumberPattern = {
     },
     {
       mask: "0000 0000 0000 0000",
+      regex: /^[0-9]{18}$/,
+      cardtype: "alelo",
+    },
+    {
+      mask: "0000 0000 0000 0000",
+      regex: /^(((636368)|(438935)|(504175)|(451416)|(636297))\d{10})$/,
+      cardtype: "elo",
+    },
+    {
+      mask: "0000 0000 0000 0000",
+      regex: /^(((5067)|(4532)|(4011))\d{12})$/,
+      cardtype: "caixa",
+    },
+    {
+      mask: "0000 0000 0000 0000",
+      regex: /^(606282|3841)[0-9]{10,15}$/,
+      cardtype: "hipercard",
+    },
+    {
+      mask: "0000 0000 0000 0000",
       cardType: "default",
     },
   ],
@@ -125,7 +145,11 @@ function updateSecurityCode(code) {
 cardNumberMasked.on("accept", () => {
   updateCardNumber(cardNumberMasked.value);
   let cardType = cardNumberMasked.masked.currentMask.cardtype;
-  setCardType(cardType);
+  if (!cardType) {
+    setCardType("default");
+  } else {
+    setCardType(cardType);
+  }
 });
 
 function updateCardNumber(number) {
